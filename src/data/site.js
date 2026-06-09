@@ -20,10 +20,10 @@ export const company = {
     { label: '고객센터', to: '/support' },
   ],
   stats: [
-    { value: '120+', label: '강의 영상' },
-    { value: '6', label: '주제 카테고리' },
-    { value: '50,000+', label: '누적 시청' },
-    { value: '98%', label: '수강생 만족도' },
+    { value: '120+', label: '강의 영상', icon: 'fa-regular fa-circle-play' },
+    { value: '6', label: '주제 카테고리', icon: 'fa-solid fa-layer-group' },
+    { value: '50,000+', label: '누적 시청', icon: 'fa-regular fa-eye' },
+    { value: '98%', label: '수강생 만족도', icon: 'fa-regular fa-face-smile' },
   ],
 }
 
@@ -63,7 +63,7 @@ export const videoCategories = [
   {
     key: 'all',
     label: '전체 영상',
-    icon: '📺',
+    icon: 'fa-regular fa-circle-play',
     desc: '모든 경제 교육 영상',
     colorClass:
       'bg-brand-50 text-brand-600 dark:bg-brand-900/30 dark:text-brand-300 border-brand-200 dark:border-brand-700',
@@ -71,7 +71,7 @@ export const videoCategories = [
   {
     key: 'basic',
     label: '경제 기초',
-    icon: '📚',
+    icon: 'fa-solid fa-graduation-cap',
     desc: 'GDP, 인플레이션, 금리의 기초',
     colorClass:
       'bg-sage-50 text-sage-600 dark:bg-sage-900/30 dark:text-sage-300 border-sage-200 dark:border-sage-700',
@@ -79,7 +79,7 @@ export const videoCategories = [
   {
     key: 'terms',
     label: '경제 용어',
-    icon: '📖',
+    icon: 'fa-regular fa-lightbulb',
     desc: '핵심 경제 용어 해설',
     colorClass:
       'bg-iris-50 text-iris-600 dark:bg-iris-900/30 dark:text-iris-300 border-iris-200 dark:border-iris-700',
@@ -87,7 +87,7 @@ export const videoCategories = [
   {
     key: 'invest',
     label: '투자·자산관리',
-    icon: '📈',
+    icon: 'fa-solid fa-chart-line',
     desc: '주식, 채권, 부동산 투자 입문',
     colorClass:
       'bg-sol-50 text-sol-600 dark:bg-sol-900/30 dark:text-sol-300 border-sol-200 dark:border-sol-700',
@@ -95,7 +95,7 @@ export const videoCategories = [
   {
     key: 'current',
     label: '시사 경제',
-    icon: '🌐',
+    icon: 'fa-regular fa-newspaper',
     desc: '경제 이슈 심층 분석',
     colorClass:
       'bg-brand-50 text-brand-600 dark:bg-brand-900/30 dark:text-brand-300 border-brand-200 dark:border-brand-700',
@@ -103,7 +103,7 @@ export const videoCategories = [
   {
     key: 'finance',
     label: '금융',
-    icon: '💰',
+    icon: 'fa-solid fa-coins',
     desc: '은행, 보험, 금융 상품',
     colorClass:
       'bg-sage-50 text-sage-600 dark:bg-sage-900/30 dark:text-sage-300 border-sage-200 dark:border-sage-700',

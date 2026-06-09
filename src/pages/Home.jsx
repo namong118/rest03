@@ -169,7 +169,7 @@ function HeroSection() {
             className="inline-flex items-center gap-2 rounded-full bg-white/15 dark:bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm border border-white/20 mb-8"
             style={{ animation: 'heroFadeUp 0.6s ease both' }}
           >
-            <span className="h-2 w-2 rounded-full bg-sage-300 animate-pulse" />
+            <i className="fa-solid fa-circle-dot text-sage-300 text-xs animate-pulse" />
             경제 교육 플랫폼 No.1
           </div>
 
@@ -241,18 +241,16 @@ function HeroSection() {
 
 function StatsBar() {
   return (
-    <section className="bg-white dark:bg-ink-950 -mt-1">
-      <div className="container-max section-x py-10">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+    <section className="bg-white dark:bg-ink-950 -mt-1 border-b border-neutral-100 dark:border-ink-800">
+      <div className="container-max section-x">
+        <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-neutral-100 dark:divide-ink-800">
           {company.stats.map((stat) => (
-            <div
-              key={stat.label}
-              className="text-center py-6 rounded-2xl bg-brand-50 dark:bg-ink-800 border border-brand-100 dark:border-ink-700 hover:shadow-md transition-shadow"
-            >
-              <div className="text-3xl md:text-4xl font-black text-brand-500 dark:text-brand-300">
+            <div key={stat.label} className="flex flex-col items-center justify-center gap-2 py-10 px-6">
+              <i className={`${stat.icon} text-lg text-brand-300 dark:text-brand-700`} />
+              <div className="text-3xl md:text-4xl font-black text-ink-900 dark:text-white tabular-nums">
                 {stat.value}
               </div>
-              <div className="text-sm font-medium text-ink-300 dark:text-slate-400 mt-1">
+              <div className="text-xs font-medium text-ink-300 dark:text-slate-500">
                 {stat.label}
               </div>
             </div>
@@ -267,35 +265,52 @@ function CategorySection() {
   const displayCategories = videoCategories.filter((c) => c.key !== 'all')
 
   return (
-    <section className="bg-white dark:bg-ink-950 py-16 md:py-20">
+    <section className="bg-white dark:bg-ink-950 py-20 md:py-28">
       <div className="container-max section-x">
-        {/* Section header */}
-        <div className="mb-10 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full bg-brand-50 dark:bg-ink-800 px-4 py-1.5 text-sm font-semibold text-brand-500 dark:text-brand-300 mb-4">
+        {/* Section header — editorial left-aligned */}
+        <div className="mb-14">
+          <span className="text-xs font-bold tracking-[0.2em] uppercase text-brand-400 dark:text-brand-400">
             주제별 학습
-          </div>
-          <h2 className="text-3xl md:text-4xl font-black text-ink-900 dark:text-white mb-3">
+          </span>
+          <h2 className="mt-3 text-3xl md:text-4xl font-black text-ink-900 dark:text-white leading-tight">
             원하는 주제를 선택하세요
           </h2>
-          <p className="text-ink-300 dark:text-slate-400 max-w-xl mx-auto">
-            체계적으로 구성된 6가지 카테고리로 경제 지식을 쌓아보세요
-          </p>
+          <div className="mt-4 h-px w-14 bg-brand-400" />
         </div>
 
-        {/* Category grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {displayCategories.map((cat) => (
+        {/* Magazine-grid: gap-px creates thin dividers */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-neutral-100 dark:bg-ink-700 rounded-2xl overflow-hidden shadow-sm">
+          {displayCategories.map((cat, i) => (
             <Link
               key={cat.key}
               to={`/videos/${cat.key}`}
-              className={`group flex items-center gap-4 rounded-2xl border p-5 ${cat.colorClass} hover:shadow-lg transition-all duration-300 hover:scale-[1.02]`}
+              className="group relative bg-white dark:bg-ink-900 p-8 flex flex-col gap-5 hover:bg-brand-50/60 dark:hover:bg-ink-800 transition-colors duration-200"
             >
-              <span className="text-3xl flex-shrink-0">{cat.icon}</span>
-              <div className="flex-1 min-w-0">
-                <div className="font-bold text-base">{cat.label}</div>
-                <div className="text-sm opacity-75 mt-0.5 truncate">{cat.desc}</div>
+              {/* Background ordinal number */}
+              <span
+                aria-hidden="true"
+                className="absolute top-5 right-6 text-6xl font-black leading-none select-none pointer-events-none text-brand-100 dark:text-ink-800"
+              >
+                {String(i + 1).padStart(2, '0')}
+              </span>
+
+              {/* Icon container */}
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-50 dark:bg-ink-800 border border-brand-100 dark:border-ink-700 flex-shrink-0">
+                <i className={`${cat.icon} text-brand-500 dark:text-brand-400`} />
               </div>
-              <ArrowRightIcon />
+
+              {/* Text */}
+              <div className="flex-1">
+                <h3 className="text-base font-bold text-ink-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-300 transition-colors">
+                  {cat.label}
+                </h3>
+                <p className="text-sm text-ink-300 dark:text-slate-500 mt-1.5 leading-relaxed">
+                  {cat.desc}
+                </p>
+              </div>
+
+              {/* Arrow */}
+              <i className="fa-solid fa-arrow-right text-xs text-brand-200 dark:text-ink-600 group-hover:text-brand-400 dark:group-hover:text-brand-500 group-hover:translate-x-1 transition-all" />
             </Link>
           ))}
         </div>

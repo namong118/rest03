@@ -15,7 +15,7 @@ const instructors = [
     bio: '서울대학교 경제학과를 졸업하고 한국은행에서 10년간 근무한 경제 전문가입니다. 복잡한 거시경제 이슈를 쉽고 명쾌하게 설명하는 것으로 유명합니다.',
     subjects: ['경제 기초', '시사 경제', 'GDP·인플레이션'],
     color: 'from-brand-300 to-brand-500',
-    icon: '👨‍🏫',
+    icon: 'fa-solid fa-chalkboard-user',
   },
   {
     id: 2,
@@ -24,7 +24,7 @@ const instructors = [
     bio: 'CFA(공인재무분석사) 자격증 보유자로 20년 이상의 투자 경험을 가진 전문가입니다. 주식, ETF, 부동산 등 다양한 투자 전략을 현실적인 관점에서 가르칩니다.',
     subjects: ['주식 투자', 'ETF', '포트폴리오 관리'],
     color: 'from-sol-300 to-sol-500',
-    icon: '👩‍💼',
+    icon: 'fa-solid fa-chart-line',
   },
   {
     id: 3,
@@ -33,7 +33,7 @@ const instructors = [
     bio: '금융감독원 출신으로 은행, 보험, 금융 상품에 대한 깊은 이해를 바탕으로 일상에서 꼭 필요한 금융 지식을 가르칩니다. 금융 소비자 보호 분야의 전문가입니다.',
     subjects: ['금융 상품', '경제 용어', '개인 금융'],
     color: 'from-sage-300 to-sage-500',
-    icon: '👨‍💻',
+    icon: 'fa-solid fa-scale-balanced',
   },
 ]
 
@@ -110,21 +110,21 @@ function MissionTab() {
       label: '미션',
       title: '경제 지식을 모두에게',
       desc: '복잡한 경제 개념을 쉽고 재미있게 전달하여, 모든 사람이 경제적 의사 결정을 올바르게 내릴 수 있도록 돕습니다.',
-      icon: '🎯',
+      icon: 'fa-solid fa-bullseye',
     },
     {
       color: 'bg-sage-400',
       label: '비전',
       title: '대한민국 경제 리터러시 향상',
       desc: '2030년까지 100만 명에게 실질적인 경제 교육을 제공하여 대한민국 경제 리터러시 수준을 세계 최고로 높입니다.',
-      icon: '🔭',
+      icon: 'fa-solid fa-binoculars',
     },
     {
       color: 'bg-iris-400',
       label: '가치관',
       title: '접근성, 신뢰, 실용성',
       desc: '누구나 접근할 수 있고, 전문가가 검증한 신뢰 가능한 콘텐츠로, 실생활에 즉시 적용 가능한 실용적 지식을 제공합니다.',
-      icon: '💡',
+      icon: 'fa-regular fa-lightbulb',
     },
   ]
 
@@ -145,8 +145,8 @@ function MissionTab() {
             key={item.label}
             className="rounded-2xl bg-white dark:bg-ink-800 border border-brand-100 dark:border-ink-700 p-6 hover:shadow-lg transition-shadow"
           >
-            <div className={`inline-flex h-12 w-12 items-center justify-center rounded-xl ${item.color} text-white text-2xl mb-4 shadow-sm`}>
-              {item.icon}
+            <div className={`inline-flex h-12 w-12 items-center justify-center rounded-xl ${item.color} text-white mb-4 shadow-sm`}>
+              <i className={`${item.icon} text-xl`} />
             </div>
             <div className="text-xs font-bold uppercase tracking-wider text-ink-300 dark:text-slate-500 mb-1">
               {item.label}
@@ -180,13 +180,13 @@ function MissionTab() {
         <h3 className="text-xl font-bold mb-6">핵심 가치</h3>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
-            { icon: '🤝', title: '신뢰', desc: '검증된 전문가가 만드는 정확한 정보' },
-            { icon: '🌍', title: '접근성', desc: '모든 사람을 위한 무료 양질의 콘텐츠' },
-            { icon: '🚀', title: '혁신', desc: '끊임없이 더 나은 교육 방법을 추구' },
+            { icon: 'fa-solid fa-handshake', title: '신뢰', desc: '검증된 전문가가 만드는 정확한 정보' },
+            { icon: 'fa-solid fa-earth-asia', title: '접근성', desc: '모든 사람을 위한 무료 양질의 콘텐츠' },
+            { icon: 'fa-solid fa-rocket', title: '혁신', desc: '끊임없이 더 나은 교육 방법을 추구' },
           ].map((val) => (
             <div key={val.title} className="rounded-xl bg-white/15 p-5">
-              <span className="text-2xl">{val.icon}</span>
-              <h4 className="font-bold mt-2 mb-1">{val.title}</h4>
+              <i className={`${val.icon} text-xl`} />
+              <h4 className="font-bold mt-3 mb-1">{val.title}</h4>
               <p className="text-sm opacity-80">{val.desc}</p>
             </div>
           ))}
@@ -214,7 +214,9 @@ function TeamTab() {
           >
             {/* Card header */}
             <div className={`bg-gradient-to-br ${inst.color} p-8 flex flex-col items-center text-white`}>
-              <span className="text-5xl mb-3">{inst.icon}</span>
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/20 border-2 border-white/30 mb-4">
+                <i className={`${inst.icon} text-2xl`} />
+              </div>
               <h3 className="text-lg font-black">{inst.name}</h3>
               <p className="text-sm opacity-85 text-center mt-1">{inst.title}</p>
             </div>

@@ -157,7 +157,9 @@ export default function Videos() {
           </nav>
 
           <div className="flex items-center gap-3 mb-2">
-            <span className="text-3xl">{activeCat?.icon || '📺'}</span>
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-100 dark:bg-brand-900/40">
+              <i className={`${activeCat?.icon || 'fa-regular fa-circle-play'} text-brand-500 dark:text-brand-300`} />
+            </div>
             <h1 className="text-2xl md:text-3xl font-black text-ink-900 dark:text-white">
               {activeCat?.label || '전체 영상'}
             </h1>
@@ -182,7 +184,7 @@ export default function Videos() {
                     : 'bg-brand-50 dark:bg-ink-800 text-ink-700 dark:text-slate-300 hover:bg-brand-100 dark:hover:bg-ink-700 border border-brand-100 dark:border-ink-600'
                 }`}
               >
-                <span>{cat.icon}</span>
+                <i className={`${cat.icon} text-[12px]`} />
                 {cat.label}
               </button>
             ))}
@@ -208,7 +210,7 @@ export default function Videos() {
         {/* Videos grid or empty state */}
         {filteredVideos.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 text-center">
-            <span className="text-6xl mb-4">📭</span>
+            <i className="fa-regular fa-folder-open text-5xl text-brand-200 dark:text-brand-800 mb-5" />
             <h3 className="text-xl font-bold text-ink-900 dark:text-white mb-2">
               아직 영상이 없습니다
             </h3>

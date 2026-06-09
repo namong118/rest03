@@ -9,14 +9,6 @@ const categoryGradients = {
   finance: 'from-sage-300 to-sage-500',
 }
 
-const categoryIcons = {
-  basic: '📚',
-  terms: '📖',
-  invest: '📈',
-  current: '🌐',
-  finance: '💰',
-}
-
 function PlayIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-12 w-12">
@@ -32,7 +24,7 @@ export default function VideoCard({ video }) {
   const isDemo = youtubeId.startsWith('DEMO_')
   const catData = videoCategories.find((c) => c.key === category)
   const gradient = categoryGradients[category] || 'from-brand-300 to-brand-500'
-  const icon = categoryIcons[category] || '📺'
+  const faIcon = catData?.icon || 'fa-regular fa-circle-play'
 
   const formattedDate = date
     ? new Date(date).toLocaleDateString('ko-KR', {
@@ -48,17 +40,23 @@ export default function VideoCard({ video }) {
       <div className="relative w-full overflow-hidden" style={{ paddingBottom: '56.25%' }}>
         <div className="absolute inset-0">
           {isDemo ? (
-            /* Placeholder gradient card */
-            <div
-              className={`flex h-full w-full flex-col items-center justify-center bg-gradient-to-br ${gradient} p-4 text-white`}
-            >
-              <span className="text-4xl mb-2 drop-shadow">{icon}</span>
-              <span className="text-xs font-semibold uppercase tracking-wider opacity-80 text-center">
-                {catData?.label || category}
-              </span>
-              <span className="mt-2 text-sm font-bold text-center leading-tight line-clamp-2 drop-shadow-sm">
-                {title}
-              </span>
+            /* Refined placeholder */
+            <div className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${gradient} relative overflow-hidden`}>
+              <div
+                className="absolute inset-0 opacity-10"
+                style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.9) 1px, transparent 1px)', backgroundSize: '18px 18px' }}
+              />
+              <div className="relative flex flex-col items-center gap-3 px-5 text-white">
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/20 border border-white/30">
+                  <i className={`${faIcon} text-xl`} />
+                </div>
+                <span className="text-xs font-bold uppercase tracking-widest opacity-80 text-center">
+                  {catData?.label || category}
+                </span>
+                <span className="text-sm font-semibold text-center leading-tight line-clamp-2 opacity-90 max-w-[200px]">
+                  {title}
+                </span>
+              </div>
             </div>
           ) : playing ? (
             <iframe
@@ -96,9 +94,9 @@ export default function VideoCard({ video }) {
         {/* Category badge + duration */}
         <div className="flex items-center justify-between mb-2">
           <span
-            className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-semibold ${catData?.colorClass || ''}`}
+            className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-semibold ${catData?.colorClass || ''}`}
           >
-            <span>{icon}</span>
+            <i className={`${faIcon} text-[10px]`} />
             {catData?.label || category}
           </span>
           {duration && (
