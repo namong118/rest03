@@ -151,137 +151,86 @@ function ArrowRightIcon() {
 
 function HeroSection() {
   return (
-    <section className="relative overflow-hidden min-h-[92vh] flex items-center">
+    <section className="relative overflow-hidden min-h-[90vh] flex items-center">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-brand-400 via-brand-500 to-sage-400 dark:from-ink-900 dark:via-ink-800 dark:to-brand-900" />
 
-      {/* 파티클 캔버스 */}
+      {/* 파티클 캔버스 — 마우스를 올리면 키워드들이 흩어집니다 */}
       <HeroParticles />
 
       {/* Decorative blur circles */}
-      <div className="absolute -top-32 -right-32 h-[600px] w-[600px] rounded-full bg-white/5 blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-20 -left-20 h-[350px] w-[350px] rounded-full bg-white/8 blur-2xl pointer-events-none" />
+      <div className="absolute -top-32 -right-32 h-[500px] w-[500px] rounded-full bg-white/5 blur-3xl" />
+      <div className="absolute -bottom-20 -left-20 h-[350px] w-[350px] rounded-full bg-white/8 blur-2xl" />
 
-      <div className="relative container-max section-x w-full py-20 lg:py-28">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-
-          {/* ── 텍스트 컬럼 ── */}
-          <div>
-            {/* Badge */}
-            <div
-              className="inline-flex items-center gap-2 rounded-full bg-white/15 dark:bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm border border-white/20 mb-8"
-              style={{ animation: 'heroFadeUp 0.6s ease both' }}
-            >
-              <i className="fa-solid fa-circle-dot text-sage-300 text-xs animate-pulse" />
-              경제 교육 플랫폼 No.1
-            </div>
-
-            {/* Headline */}
-            <h1
-              className="text-5xl md:text-6xl lg:text-6xl xl:text-7xl font-black text-white leading-tight mb-6"
-              style={{ animation: 'heroFadeUp 0.6s ease 0.15s both' }}
-            >
-              경제를 쉽게
-              <br />
-              <span className="text-sol-300 dark:text-sol-200">미래를 바르게</span>
-            </h1>
-
-            {/* Subheadline */}
-            <p
-              className="text-lg md:text-xl text-white/80 dark:text-slate-300 mb-10 leading-relaxed max-w-md"
-              style={{ animation: 'heroFadeUp 0.6s ease 0.3s both' }}
-            >
-              {company.subTagline}
-            </p>
-
-            {/* CTA Buttons */}
-            <div
-              className="flex flex-wrap gap-4"
-              style={{ animation: 'heroFadeUp 0.6s ease 0.45s both' }}
-            >
-              <Link
-                to="/videos/all"
-                className="inline-flex items-center gap-2 rounded-full bg-white text-brand-500 dark:text-brand-600 px-7 py-3.5 font-bold shadow-lg hover:shadow-xl hover:bg-brand-50 transition-all active:scale-95"
-              >
-                동영상 보기
-                <ArrowRightIcon />
-              </Link>
-              <Link
-                to="/about/intro"
-                className="inline-flex items-center gap-2 rounded-full border-2 border-white/60 text-white px-7 py-3.5 font-bold hover:bg-white/15 backdrop-blur-sm transition-all active:scale-95"
-              >
-                회사 소개
-              </Link>
-            </div>
-          </div>
-
-          {/* ── 포토 컬럼 (desktop) ── */}
+      <div className="relative container-max section-x w-full py-24">
+        <div className="max-w-3xl">
+          {/* Badge */}
           <div
-            className="hidden lg:flex items-center justify-center"
-            style={{ animation: 'heroFadeUp 0.6s ease 0.35s both' }}
+            className="inline-flex items-center gap-2 rounded-full bg-white/15 dark:bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm border border-white/20 mb-8"
+            style={{ animation: 'heroFadeUp 0.6s ease both' }}
           >
-            <div className="relative w-full max-w-[360px] xl:max-w-[400px]">
-              {/* Glow halo behind the frame */}
-              <div className="absolute -inset-6 rounded-[2.5rem] bg-white/15 blur-2xl pointer-events-none" />
-
-              {/* Main photo frame */}
-              <div
-                className="relative overflow-hidden rounded-[2rem] shadow-2xl border-2 border-white/25"
-                style={{ aspectRatio: '4 / 5' }}
-              >
-                <img
-                  src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=640&h=800&q=85&fit=crop&crop=focalpoint"
-                  alt="전문가가 경제 데이터를 분석하는 모습"
-                  className="h-full w-full object-cover"
-                  loading="eager"
-                />
-                {/* Brand tint — bottom fade */}
-                <div className="absolute inset-0 bg-gradient-to-t from-brand-600/50 via-brand-500/10 to-transparent" />
-
-                {/* In-photo label */}
-                <div className="absolute bottom-5 left-5 right-5">
-                  <div className="inline-flex items-center gap-2 rounded-full bg-white/20 backdrop-blur-md px-4 py-2 text-xs font-bold text-white border border-white/30">
-                    <i className="fa-solid fa-graduation-cap text-sol-300" />
-                    체계적인 경제 커리큘럼
-                  </div>
-                </div>
-              </div>
-
-              {/* Floating stat card — top right */}
-              <div
-                className="absolute -top-5 -right-8 flex items-center gap-3 rounded-2xl bg-white dark:bg-ink-800 px-4 py-3 shadow-2xl border border-neutral-100 dark:border-ink-700"
-                style={{ animation: 'heroFadeUp 0.6s ease 0.55s both' }}
-              >
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-50 dark:bg-brand-900/40 flex-shrink-0">
-                  <i className="fa-regular fa-circle-play text-brand-400 dark:text-brand-300 text-sm" />
-                </div>
-                <div>
-                  <div className="text-[10px] font-medium text-ink-300 dark:text-slate-500 leading-none mb-0.5">강의 영상</div>
-                  <div className="text-base font-black text-ink-900 dark:text-white leading-none">120+</div>
-                </div>
-              </div>
-
-              {/* Floating stat card — bottom left */}
-              <div
-                className="absolute -bottom-5 -left-8 flex items-center gap-3 rounded-2xl bg-white dark:bg-ink-800 px-4 py-3 shadow-2xl border border-neutral-100 dark:border-ink-700"
-                style={{ animation: 'heroFadeUp 0.6s ease 0.65s both' }}
-              >
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-50 dark:bg-brand-900/40 flex-shrink-0">
-                  <i className="fa-regular fa-face-smile text-brand-400 dark:text-brand-300 text-sm" />
-                </div>
-                <div>
-                  <div className="text-[10px] font-medium text-ink-300 dark:text-slate-500 leading-none mb-0.5">수강생 만족도</div>
-                  <div className="text-base font-black text-ink-900 dark:text-white leading-none">98%</div>
-                </div>
-              </div>
-            </div>
+            <i className="fa-solid fa-circle-dot text-sage-300 text-xs animate-pulse" />
+            경제 교육 플랫폼 No.1
           </div>
 
+          {/* Headline */}
+          <h1
+            className="text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight mb-6"
+            style={{ animation: 'heroFadeUp 0.6s ease 0.15s both' }}
+          >
+            경제를 쉽게
+            <br />
+            <span className="text-sol-300 dark:text-sol-200">미래를 바르게</span>
+          </h1>
+
+          {/* Subheadline */}
+          <p
+            className="text-lg md:text-xl text-white/80 dark:text-slate-300 mb-10 leading-relaxed max-w-xl"
+            style={{ animation: 'heroFadeUp 0.6s ease 0.3s both' }}
+          >
+            {company.subTagline}
+          </p>
+
+          {/* CTA Buttons */}
+          <div
+            className="flex flex-wrap gap-4"
+            style={{ animation: 'heroFadeUp 0.6s ease 0.45s both' }}
+          >
+            <Link
+              to="/videos/all"
+              className="inline-flex items-center gap-2 rounded-full bg-white text-brand-500 dark:text-brand-600 px-7 py-3.5 font-bold shadow-lg hover:shadow-xl hover:bg-brand-50 transition-all active:scale-95"
+            >
+              동영상 보기
+              <ArrowRightIcon />
+            </Link>
+            <Link
+              to="/about/intro"
+              className="inline-flex items-center gap-2 rounded-full border-2 border-white/60 text-white px-7 py-3.5 font-bold hover:bg-white/15 backdrop-blur-sm transition-all active:scale-95"
+            >
+              회사 소개
+            </Link>
+          </div>
+        </div>
+
+        {/* Hero stats (right side, desktop only) */}
+        <div
+          className="hidden lg:grid absolute right-0 top-1/2 -translate-y-1/2 grid-cols-2 gap-4 w-72 xl:w-80 pr-4"
+          style={{ animation: 'heroFadeUp 0.6s ease 0.6s both' }}
+        >
+          {company.stats.map((stat) => (
+            <div
+              key={stat.label}
+              className="rounded-2xl bg-white/15 dark:bg-white/8 backdrop-blur-sm border border-white/20 p-5 text-white text-center hover:bg-white/20 transition-colors"
+            >
+              <div className="text-2xl font-black text-sol-200 dark:text-sol-300">{stat.value}</div>
+              <div className="text-xs font-medium opacity-80 mt-1">{stat.label}</div>
+            </div>
+          ))}
         </div>
       </div>
 
       {/* Bottom wave */}
-      <div className="absolute bottom-0 left-0 right-0 pointer-events-none">
+      <div className="absolute bottom-0 left-0 right-0">
         <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
           <path d="M0 60 C360 0 1080 0 1440 60 L1440 60 L0 60 Z" className="fill-white dark:fill-ink-950" />
         </svg>
