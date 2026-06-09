@@ -1,6 +1,145 @@
+import { useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { company, videoCategories, videos } from '../data/site.js'
 import VideoCard from '../components/VideoCard.jsx'
+
+// ── 파티클 키워드 풀 ──────────────────────────────────────────
+const KEYWORDS = [
+  'GDP', '금리', '환율', 'CPI', '인플레이션', 'ETF',
+  '주식', '채권', '부동산', '투자', '디플레이션', 'QE',
+  '테이퍼링', '경기', '수익률', '자산', '금융', '경제',
+  'ROI', '복리', '포트폴리오', '금융시장',
+]
+
+function HeroParticles() {
+  const canvasRef = useRef(null)
+  const mouse = useRef({ x: -9999, y: -9999 })
+  const particles = useRef([])
+  const raf = useRef(null)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    const section = canvas.parentElement
+
+    function resize() {
+      canvas.width = section.offsetWidth
+      canvas.height = section.offsetHeight
+    }
+
+    function mkParticle(i) {
+      return {
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        text: KEYWORDS[i % KEYWORDS.length],
+        fontSize: Math.floor(Math.random() * 7 + 10),
+        opacity: Math.random() * 0.35 + 0.12,
+      }
+    }
+
+    function initParticles() {
+      const textCount = Math.min(KEYWORDS.length, Math.max(10, Math.floor(canvas.width / 70)))
+      const dotCount = 24
+      particles.current = [
+        ...Array.from({ length: textCount }, (_, i) => mkParticle(i)),
+        ...Array.from({ length: dotCount }, () => ({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
+          text: null,
+          dotR: Math.random() * 2.5 + 1,
+          opacity: Math.random() * 0.25 + 0.08,
+        })),
+      ]
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      const { x: mx, y: my } = mouse.current
+
+      particles.current.forEach((p) => {
+        // 마우스 반발
+        const dx = p.x - mx
+        const dy = p.y - my
+        const dist2 = dx * dx + dy * dy
+        const R = 140
+        if (dist2 < R * R && dist2 > 0) {
+          const dist = Math.sqrt(dist2)
+          const force = ((R - dist) / R) * 0.65
+          p.vx += (dx / dist) * force
+          p.vy += (dy / dist) * force
+        }
+
+        // 감쇠 + 미세 브라운 운동
+        p.vx = p.vx * 0.96 + (Math.random() - 0.5) * 0.025
+        p.vy = p.vy * 0.96 + (Math.random() - 0.5) * 0.025
+
+        // 속도 상한
+        const spd = Math.sqrt(p.vx * p.vx + p.vy * p.vy)
+        if (spd > 2.8) {
+          p.vx = (p.vx / spd) * 2.8
+          p.vy = (p.vy / spd) * 2.8
+        }
+
+        p.x += p.vx
+        p.y += p.vy
+
+        // 화면 밖으로 나가면 반대편으로 래핑
+        const pad = 60
+        if (p.x < -pad) p.x = canvas.width + pad
+        else if (p.x > canvas.width + pad) p.x = -pad
+        if (p.y < -pad) p.y = canvas.height + pad
+        else if (p.y > canvas.height + pad) p.y = -pad
+
+        // 그리기
+        ctx.globalAlpha = p.opacity
+        ctx.fillStyle = '#ffffff'
+        if (p.text) {
+          ctx.font = `600 ${p.fontSize}px Pretendard, sans-serif`
+          ctx.fillText(p.text, p.x, p.y)
+        } else {
+          ctx.beginPath()
+          ctx.arc(p.x, p.y, p.dotR, 0, Math.PI * 2)
+          ctx.fill()
+        }
+      })
+
+      ctx.globalAlpha = 1
+      raf.current = requestAnimationFrame(draw)
+    }
+
+    function onMouseMove(e) {
+      const rect = canvas.getBoundingClientRect()
+      mouse.current = { x: e.clientX - rect.left, y: e.clientY - rect.top }
+    }
+    function onMouseLeave() {
+      mouse.current = { x: -9999, y: -9999 }
+    }
+
+    const ro = new ResizeObserver(() => { resize(); initParticles() })
+    ro.observe(section)
+
+    resize()
+    initParticles()
+    draw()
+
+    section.addEventListener('mousemove', onMouseMove)
+    section.addEventListener('mouseleave', onMouseLeave)
+
+    return () => {
+      cancelAnimationFrame(raf.current)
+      ro.disconnect()
+      section.removeEventListener('mousemove', onMouseMove)
+      section.removeEventListener('mouseleave', onMouseLeave)
+    }
+  }, [])
+
+  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
+}
 
 function ArrowRightIcon() {
   return (
@@ -16,43 +155,47 @@ function HeroSection() {
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-brand-400 via-brand-500 to-sage-400 dark:from-ink-900 dark:via-ink-800 dark:to-brand-900" />
 
-      {/* Decorative circles */}
-      <div className="absolute -top-32 -right-32 h-[500px] w-[500px] rounded-full bg-white/5 dark:bg-white/3" />
-      <div className="absolute -bottom-20 -left-20 h-[350px] w-[350px] rounded-full bg-white/8 dark:bg-white/4" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[800px] w-[800px] rounded-full bg-white/3 dark:bg-white/2" />
+      {/* 파티클 캔버스 — 마우스를 올리면 키워드들이 흩어집니다 */}
+      <HeroParticles />
 
-      {/* Grid dot pattern */}
-      <div
-        className="absolute inset-0 opacity-10"
-        style={{
-          backgroundImage:
-            'radial-gradient(circle, rgba(255,255,255,0.5) 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-        }}
-      />
+      {/* Decorative blur circles */}
+      <div className="absolute -top-32 -right-32 h-[500px] w-[500px] rounded-full bg-white/5 blur-3xl" />
+      <div className="absolute -bottom-20 -left-20 h-[350px] w-[350px] rounded-full bg-white/8 blur-2xl" />
 
       <div className="relative container-max section-x w-full py-24">
         <div className="max-w-3xl">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/15 dark:bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm border border-white/20 mb-8">
+          <div
+            className="inline-flex items-center gap-2 rounded-full bg-white/15 dark:bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm border border-white/20 mb-8"
+            style={{ animation: 'heroFadeUp 0.6s ease both' }}
+          >
             <span className="h-2 w-2 rounded-full bg-sage-300 animate-pulse" />
             경제 교육 플랫폼 No.1
           </div>
 
           {/* Headline */}
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight mb-6">
+          <h1
+            className="text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight mb-6"
+            style={{ animation: 'heroFadeUp 0.6s ease 0.15s both' }}
+          >
             경제를 쉽게
             <br />
             <span className="text-sol-300 dark:text-sol-200">미래를 바르게</span>
           </h1>
 
           {/* Subheadline */}
-          <p className="text-lg md:text-xl text-white/80 dark:text-slate-300 mb-10 leading-relaxed max-w-xl">
+          <p
+            className="text-lg md:text-xl text-white/80 dark:text-slate-300 mb-10 leading-relaxed max-w-xl"
+            style={{ animation: 'heroFadeUp 0.6s ease 0.3s both' }}
+          >
             {company.subTagline}
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-wrap gap-4">
+          <div
+            className="flex flex-wrap gap-4"
+            style={{ animation: 'heroFadeUp 0.6s ease 0.45s both' }}
+          >
             <Link
               to="/videos/all"
               className="inline-flex items-center gap-2 rounded-full bg-white text-brand-500 dark:text-brand-600 px-7 py-3.5 font-bold shadow-lg hover:shadow-xl hover:bg-brand-50 transition-all active:scale-95"
@@ -70,7 +213,10 @@ function HeroSection() {
         </div>
 
         {/* Hero stats (right side, desktop only) */}
-        <div className="hidden lg:grid absolute right-0 top-1/2 -translate-y-1/2 grid-cols-2 gap-4 w-72 xl:w-80 pr-4">
+        <div
+          className="hidden lg:grid absolute right-0 top-1/2 -translate-y-1/2 grid-cols-2 gap-4 w-72 xl:w-80 pr-4"
+          style={{ animation: 'heroFadeUp 0.6s ease 0.6s both' }}
+        >
           {company.stats.map((stat) => (
             <div
               key={stat.label}

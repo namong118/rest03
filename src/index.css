@@ -11,6 +11,17 @@
   }
 }
 
+@keyframes heroFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @layer components {
   .section-x {
     @apply px-4 md:px-10 lg:px-20 xl:px-32;
