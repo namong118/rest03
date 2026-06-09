@@ -9,7 +9,12 @@ import Videos from './pages/Videos.jsx'
 import About from './pages/About.jsx'
 import SimplePage from './pages/SimplePage.jsx'
 
-export const ThemeContext = createContext({ dark: false, toggleDark: () => {} })
+export const ThemeContext = createContext({
+  dark: false,
+  toggleDark: () => {},
+  palette: 'sky',
+  setPalette: () => {},
+})
 
 export function useTheme() {
   return useContext(ThemeContext)
@@ -26,24 +31,27 @@ export default function App() {
     }
   })
 
+  const [palette, setPaletteState] = useState(() => {
+    try { return localStorage.getItem('econlab-palette') || 'sky' } catch { return 'sky' }
+  })
+
   useEffect(() => {
     const root = document.documentElement
-    if (dark) {
-      root.classList.add('dark')
-    } else {
-      root.classList.remove('dark')
-    }
-    try {
-      localStorage.setItem('econlab-dark-mode', String(dark))
-    } catch {
-      // ignore
-    }
+    if (dark) root.classList.add('dark')
+    else root.classList.remove('dark')
+    try { localStorage.setItem('econlab-dark-mode', String(dark)) } catch {}
   }, [dark])
 
+  useEffect(() => {
+    document.documentElement.setAttribute('data-palette', palette)
+    try { localStorage.setItem('econlab-palette', palette) } catch {}
+  }, [palette])
+
   const toggleDark = () => setDark((prev) => !prev)
+  const setPalette = (p) => setPaletteState(p)
 
   return (
-    <ThemeContext.Provider value={{ dark, toggleDark }}>
+    <ThemeContext.Provider value={{ dark, toggleDark, palette, setPalette }}>
       <ScrollToTop />
       <div className="flex min-h-screen flex-col">
         <Header />

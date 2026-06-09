@@ -43,6 +43,105 @@ function ChevronDownIcon({ className = '' }) {
   )
 }
 
+function PaletteIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 2C6.477 2 2 6.477 2 12c0 4.236 2.636 7.855 6.356 9.312-.16-.688-.3-1.746-.063-2.504.216-.69 1.418-5.524 1.418-5.524s-.362-.724-.362-1.796c0-1.683.977-2.942 2.19-2.942 1.034 0 1.534.776 1.534 1.706 0 1.04-.663 2.597-.005 4.057.57 1.283 1.926 1.61 3.085.76 2.31-1.697 3.869-4.41 3.869-7.569C20 6.477 16.523 2 12 2z" />
+      <circle cx="8.5" cy="11.5" r="1" fill="currentColor" stroke="none" />
+      <circle cx="15.5" cy="8.5" r="1" fill="currentColor" stroke="none" />
+      <circle cx="16" cy="14" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  )
+}
+
+const PALETTES = [
+  { key: 'sky',     label: '스카이',    hex: '#4DBBDB' },
+  { key: 'rose',    label: '로즈',      hex: '#FB7185' },
+  { key: 'emerald', label: '에메랄드',  hex: '#34D399' },
+  { key: 'violet',  label: '바이올렛',  hex: '#A78BFA' },
+  { key: 'amber',   label: '앰버',      hex: '#FBBF24' },
+]
+
+function PalettePicker() {
+  const { palette, setPalette } = useTheme()
+  const [open, setOpen] = useState(false)
+  const ref = useRef(null)
+
+  useEffect(() => {
+    function handleOutside(e) {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false)
+    }
+    document.addEventListener('mousedown', handleOutside)
+    return () => document.removeEventListener('mousedown', handleOutside)
+  }, [])
+
+  const current = PALETTES.find((p) => p.key === palette) || PALETTES[0]
+
+  return (
+    <div ref={ref} className="relative">
+      {/* 팔레트 토글 버튼 — 현재 컬러 원 + 아이콘 */}
+      <button
+        onClick={() => setOpen((v) => !v)}
+        aria-label="컬러 테마 변경"
+        title="컬러 테마"
+        className="flex h-9 w-9 items-center justify-center rounded-xl text-ink-300 dark:text-slate-400 hover:bg-brand-50 dark:hover:bg-ink-800 hover:text-brand-500 dark:hover:text-brand-300 transition-colors relative"
+      >
+        <PaletteIcon />
+        {/* 현재 팔레트 색상 인디케이터 (우하단 점) */}
+        <span
+          className="absolute bottom-1 right-1 h-2 w-2 rounded-full ring-1 ring-white dark:ring-ink-900"
+          style={{ backgroundColor: current.hex }}
+        />
+      </button>
+
+      {/* 팔레트 팝오버 */}
+      {open && (
+        <div className="absolute right-0 top-full mt-2 z-50 rounded-2xl bg-white dark:bg-ink-800 border border-neutral-100 dark:border-ink-700 shadow-xl p-3">
+          {/* 제목 */}
+          <p className="text-[11px] font-semibold text-ink-300 dark:text-slate-500 uppercase tracking-wider mb-2.5 px-0.5">
+            컬러 테마
+          </p>
+          {/* 컬러 스와치 */}
+          <div className="flex gap-2">
+            {PALETTES.map((p) => (
+              <button
+                key={p.key}
+                onClick={() => { setPalette(p.key); setOpen(false) }}
+                title={p.label}
+                aria-label={`${p.label} 테마 적용`}
+                className="group relative flex flex-col items-center gap-1.5"
+              >
+                <span
+                  className={[
+                    'flex h-8 w-8 items-center justify-center rounded-full transition-all duration-150',
+                    'ring-2 ring-offset-2 dark:ring-offset-ink-800',
+                    palette === p.key
+                      ? 'ring-current scale-110'
+                      : 'ring-transparent hover:scale-110',
+                  ].join(' ')}
+                  style={{
+                    backgroundColor: p.hex,
+                    color: p.hex,
+                  }}
+                >
+                  {palette === p.key && (
+                    <svg className="h-3.5 w-3.5 text-white drop-shadow" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </span>
+                <span className="text-[10px] font-medium text-ink-300 dark:text-slate-500 group-hover:text-ink-800 dark:group-hover:text-slate-300 transition-colors">
+                  {p.label}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 function DesktopNavItem({ item }) {
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
@@ -168,7 +267,7 @@ function MobileNavItem({ item, onClose }) {
 }
 
 export default function Header() {
-  const { dark, toggleDark } = useTheme()
+  const { dark, toggleDark, palette, setPalette } = useTheme()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
@@ -223,7 +322,10 @@ export default function Header() {
             </nav>
 
             {/* Right actions */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
+              {/* 컬러 팔레트 선택기 */}
+              <PalettePicker />
+
               {/* Dark mode toggle */}
               <button
                 onClick={toggleDark}
@@ -291,7 +393,8 @@ export default function Header() {
             </nav>
 
             {/* Panel footer */}
-            <div className="border-t border-brand-100 dark:border-ink-700 px-5 py-4">
+            <div className="border-t border-brand-100 dark:border-ink-700 px-5 py-4 space-y-3">
+              {/* 다크모드 토글 */}
               <button
                 onClick={toggleDark}
                 className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-ink-700 dark:text-slate-300 hover:bg-brand-50 dark:hover:bg-ink-800 transition-colors"
@@ -299,6 +402,39 @@ export default function Header() {
                 {dark ? <SunIcon /> : <MoonIcon />}
                 {dark ? '라이트 모드로 전환' : '다크 모드로 전환'}
               </button>
+
+              {/* 모바일 컬러 팔레트 */}
+              <div className="px-4 pb-1">
+                <p className="text-[11px] font-semibold text-ink-300 dark:text-slate-500 uppercase tracking-wider mb-2">
+                  컬러 테마
+                </p>
+                <div className="flex gap-3">
+                  {PALETTES.map((p) => (
+                    <button
+                      key={p.key}
+                      onClick={() => { setPalette(p.key); setMobileOpen(false) }}
+                      title={p.label}
+                      aria-label={`${p.label} 테마 적용`}
+                      className="flex flex-col items-center gap-1"
+                    >
+                      <span
+                        className={[
+                          'flex h-8 w-8 items-center justify-center rounded-full ring-2 ring-offset-2 dark:ring-offset-ink-900 transition-all',
+                          palette === p.key ? 'ring-current scale-110' : 'ring-transparent',
+                        ].join(' ')}
+                        style={{ backgroundColor: p.hex, color: p.hex }}
+                      >
+                        {palette === p.key && (
+                          <svg className="h-3.5 w-3.5 text-white drop-shadow" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </span>
+                      <span className="text-[10px] font-medium text-ink-300 dark:text-slate-500">{p.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
